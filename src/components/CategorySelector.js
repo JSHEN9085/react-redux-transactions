@@ -12,7 +12,6 @@ const CategorySelector = (props) => {
       return (
         <CategoryField
           key={ i }
-          checked={ checked }
           category={ category }
         />
       )

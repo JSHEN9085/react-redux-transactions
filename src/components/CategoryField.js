@@ -1,22 +1,42 @@
-import React from 'react'
+import React, { Component } from 'react'
+import {connect} from 'react-redux';
 
-const CategoryField = (props) => {
-  const { category, checked } = props
+class CategoryField extends Component {
 
-  return (
-    <div className=" four wide field">
-      <div className="ui radio checkbox">
+  handleOnClick = () => {
+    let filterTransactions = this.props.transactions.filter(transaction => transaction.category === this.props.category)
+    this.props.setCategory(this.props.category)
+    this.props.setFilterTransactions(filterTransactions)
+  }
 
-        <input
-          type="radio"
-          name="category"
-          checked={ checked }
-        />
-        <label>{ category }</label>
+  render() {
+    return (
+      <div className=" four wide field">
+        <div className="ui radio checkbox">
 
+          <input
+            type="radio"
+            name="category"
+            onClick={this.handleOnClick}
+          />
+          <label>{ this.props.category }</label>
+
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
+
 }
 
-export default CategoryField
+const mapStateToProps = (state) => {
+  return {
+    transactions: state.transactionReducer.transactions
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  setCategory: category => dispatch({type: "CHANGE_CATEGORY", category}),
+  setFilterTransactions: transactions => dispatch({type: "FILTER_TRANSACTION", transactions})
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryField)
